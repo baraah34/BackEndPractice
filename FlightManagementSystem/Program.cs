@@ -61,6 +61,7 @@ namespace FlightManagementSystem
             Console.WriteLine("Passenger registered successfully.");
             Console.WriteLine("Passenger ID: " + passenger.passengerId);
         }
+        //--------------------------------------------------------
         //case 2 
         public static void AddAircraft()
         {
@@ -92,6 +93,46 @@ namespace FlightManagementSystem
 
             Console.WriteLine("Aircraft added successfully.");
             Console.WriteLine("Aircraft ID: " + aircraft.aircraftId);
+        }
+        //---------------------------------------------------------------
+        //case 3 
+            public static void RegisterPilot()
+        {
+            Console.WriteLine("---- Register Pilot ----");
+
+            Console.Write("Enter pilot name: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Enter pilot phone: ");
+            string phone = Console.ReadLine();
+
+            Console.Write("Enter license number: ");
+            string license = Console.ReadLine();
+
+            bool licenseExists = context.Pilots.Any(p => p.licenseNumber == license);
+
+            if (licenseExists)
+            {
+                Console.WriteLine("This license number already exists.");
+                return;
+            }
+
+           
+
+            Pilot pilot = new Pilot
+            {
+                pilotId = context.Pilots.Count + 1,
+                pilotName = name,
+                pilotPhone = phone,
+                licenseNumber = license,
+                flightHours = 0,
+                isAvailable = true                                                                                              
+            };
+
+            context.Pilots.Add(pilot);
+
+            Console.WriteLine("Pilot registered successfully.");
+            Console.WriteLine("Pilot ID: " + pilot.pilotId);
         }
         
 
@@ -141,6 +182,7 @@ namespace FlightManagementSystem
                         break;
 
                     case 3:
+                        RegisterPilot();
                         break;
 
                     case 4:
@@ -175,6 +217,12 @@ namespace FlightManagementSystem
                     default:
                         Console.WriteLine("Invalid option.");
                         break;
+                }
+
+                if (running)
+                {
+                    Console.WriteLine("\nPress any key to continue...");
+                    Console.ReadKey();
                 }
             }
         }
