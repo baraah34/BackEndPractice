@@ -1,6 +1,7 @@
 ﻿using FlightManagementSystem.Models;
 using System;
 using System.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace FlightManagementSystem
 {
     internal class Program
@@ -24,7 +25,7 @@ namespace FlightManagementSystem
 
             Console.Write("Enter passenger phone: ");
             string phone = Console.ReadLine();
-
+        
             Console.Write("Enter passport number: ");
             string passport = Console.ReadLine();
 
@@ -41,6 +42,10 @@ namespace FlightManagementSystem
             Console.Write("Enter nationality: ");
             string nationality = Console.ReadLine();
 
+            //Go to the passenger list inside context.
+            //Count how many passenger are already saved.
+            //Add 1 to create the new passenger ID.
+
             Passenger passenger = new Passenger
             {
                 passengerId = context.Passengers.Count + 1,
@@ -56,9 +61,39 @@ namespace FlightManagementSystem
             Console.WriteLine("Passenger registered successfully.");
             Console.WriteLine("Passenger ID: " + passenger.passengerId);
         }
+        //case 2 
+        public static void AddAircraft()
+        {
+            Console.WriteLine("---- Add Aircraft ----");
+
+            Console.Write("Enter aircraft model: ");
+            string model = Console.ReadLine();
+
+            Console.Write("Enter total seats: ");
+            int totalSeats = int.Parse(Console.ReadLine());
+
+            if (totalSeats <= 0)
+            {
+                Console.WriteLine("Invalid seats number.");
+                return;
+            }
 
 
-      
+        
+            Aircraft aircraft = new Aircraft
+            {
+                aircraftId = context.Aircrafts.Count + 1,
+                model = model,
+                totalSeats = totalSeats,
+                isOperational = true
+            };
+
+            context.Aircrafts.Add(aircraft);
+
+            Console.WriteLine("Aircraft added successfully.");
+            Console.WriteLine("Aircraft ID: " + aircraft.aircraftId);
+        }
+        
 
         // ---------------------------------------------------------
         // Main Menu
@@ -102,6 +137,7 @@ namespace FlightManagementSystem
                         break;
 
                     case 2:
+                        AddAircraft();
                         break;
 
                     case 3:
