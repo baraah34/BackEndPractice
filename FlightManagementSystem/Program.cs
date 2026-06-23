@@ -134,7 +134,33 @@ namespace FlightManagementSystem
             Console.WriteLine("Pilot registered successfully.");
             Console.WriteLine("Pilot ID: " + pilot.pilotId);
         }
-        
+        // ---------------------------------------------------------
+        //case 4
+        public static void ViewAllFlights()
+        {
+            Console.WriteLine("===== View All Flights =====");
+
+            if (!context.Flights.Any())
+            {
+                Console.WriteLine("No flights found.");
+                return;
+            }
+
+            foreach (var flight in context.Flights)
+            {
+                Console.WriteLine("--------------------------------");
+                Console.WriteLine("Flight Code: " + flight.flightCode);
+                Console.WriteLine("From: " + flight.origin);
+                Console.WriteLine("To: " + flight.destination);
+                Console.WriteLine("Date: " + flight.departureDate);
+                Console.WriteLine("Time: " + flight.departureTime);
+                Console.WriteLine("Available Seats: " + flight.availableSeats);
+                Console.WriteLine("Ticket Price: " + flight.ticketPrice);
+                Console.WriteLine("Status: " + flight.status);
+            }
+        }
+        //-------------------------------------------------------------
+        //case 5
 
         // ---------------------------------------------------------
         // Main Menu
@@ -186,6 +212,7 @@ namespace FlightManagementSystem
                         break;
 
                     case 4:
+                        ViewAllFlights();
                         break;
 
                     case 5:
