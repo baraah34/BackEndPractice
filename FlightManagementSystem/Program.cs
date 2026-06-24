@@ -272,10 +272,90 @@ namespace FlightManagementSystem
             Console.WriteLine("Flight scheduled successfully.");
             Console.WriteLine("Flight Code: " + flight.flightCode);
         }
-        
+        //--------------------------------------------------------------
+        //case 6
+        public static void BookFlight()
+        {
+            Console.WriteLine("---- Book a Flight ----");
 
+            if (context.Passengers.Count == 0)
+            {
+                Console.WriteLine("No passengers registered.");
+                return;
+            }
+
+            Console.Write("Enter passenger ID: ");
+            int passengerId = int.Parse(Console.ReadLine());
+
+            Passenger passenger = context.Passengers.FirstOrDefault(p => p.passengerId == passengerId);
+
+            if (passenger == null)
+            {
+                Console.WriteLine("Passenger not found.");
+                return;
+            }
+
+            Console.Write("Enter destination: ");
+            string destination = Console.ReadLine();
+
+            var availableFlights = context.Flights.Where(f => f.destination.ToLower() == destination.ToLower()&& f.status == "Scheduled"&& f.availableSeats > 0).ToList();
+            
+            if (availableFlights.Count == 0)
+            {
+                Console.WriteLine("No available flights to this destination.");
+                return;
+            }
+
+            Console.WriteLine("Available Flights:");
+
+            foreach (Flight flight in availableFlights)
+            {
+                Console.WriteLine(
+                    flight.flightId + ". " +
+                    flight.flightCode +
+                    " | From: " + flight.origin +
+                    " | To: " + flight.destination +
+                    " | Seats: " + flight.availableSeats +
+                    " | Price: " + flight.ticketPrice
+                );
+            }
+
+            Console.Write("Choose flight ID: ");
+            int flightId = int.Parse(Console.ReadLine());
+
+            Flight selectedFlight = availableFlights.FirstOrDefault(f => f.flightId == flightId);
+
+            if (selectedFlight == null)
+            {
+                Console.WriteLine("Flight not found.");
+                return;
+            }
+
+            int bookingId = context.Bookings.Count + 1;
+
+            Booking booking = new Booking
+            {
+                bookingId = bookingId,
+                passengerId = passenger.passengerId,
+                flightId = selectedFlight.flightId,
+                seatNumber = "S" + bookingId,
+                bookingDate = DateTime.Now.ToShortDateString(),
+                totalPrice = selectedFlight.ticketPrice,
+                status = "Confirmed"
+            };
+
+            context.Bookings.Add(booking);
+
+            selectedFlight.availableSeats--;
+
+            Console.WriteLine("Booking confirmed successfully.");
+            Console.WriteLine("Booking ID: " + booking.bookingId);
+            Console.WriteLine("Seat Number: " + booking.seatNumber);
+            Console.WriteLine("Total Price: " + booking.totalPrice);
+        }
 
         // ---------------------------------------------------------
+
         // Main Menu
         // 
         static void Main(string[] args)
@@ -333,6 +413,7 @@ namespace FlightManagementSystem
                         break;
 
                     case 6:
+                        BookFlight();
                         break;
 
                     case 7:
