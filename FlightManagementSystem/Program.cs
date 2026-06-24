@@ -353,8 +353,52 @@ namespace FlightManagementSystem
             Console.WriteLine("Seat Number: " + booking.seatNumber);
             Console.WriteLine("Total Price: " + booking.totalPrice);
         }
+        //------------------------------------------
+        //case 7 
+        public static void CancelBooking()
+        {
+            Console.WriteLine("---- Cancel Booking ----");
+
+            Console.Write("Enter booking ID: ");
+            int bookingId = int.Parse(Console.ReadLine());
+
+            Booking booking = context.Bookings.FirstOrDefault(b => b.bookingId == bookingId);
+
+            if (booking == null)
+            {
+                Console.WriteLine("Booking not found.");
+                return;
+            }
+
+            if (booking.status == "Cancelled")
+            {
+                Console.WriteLine("Booking is already cancelled.");
+                return;
+            }
+
+            Flight flight = context.Flights.FirstOrDefault(f => f.flightId == booking.flightId);
+
+            if (flight == null)
+            {
+                Console.WriteLine("Flight not found.");
+                return;
+            }
+
+            if (flight.status == "Departed")
+            {
+                Console.WriteLine("Cannot cancel booking because flight already departed.");
+                return;
+            }
+
+            booking.status = "Cancelled"; // change booking status
+            flight.availableSeats++;      // return the seat to the flight
+
+            Console.WriteLine("Booking cancelled successfully.");
+        }
 
         // ---------------------------------------------------------
+        //case 8 
+
 
         // Main Menu
         // 
