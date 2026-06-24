@@ -461,6 +461,7 @@ namespace FlightManagementSystem
                         break;
 
                     case 7:
+                        CancelBooking();
                         break;
 
                     case 8:
