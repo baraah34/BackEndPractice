@@ -138,7 +138,7 @@ namespace FlightManagementSystem
         //case 4
         public static void ViewAllFlights()
         {
-            Console.WriteLine("===== View All Flights =====");
+            Console.WriteLine("---- View All Flights ----");
 
             if (!context.Flights.Any())
             {
@@ -416,7 +416,7 @@ namespace FlightManagementSystem
                 return;
             }
             //flight status validation
-            if (flight.status != "scheduled")
+            if (flight.status != "Scheduled")
             {
                 Console.WriteLine("only scheduled flights can depart.");
                 return;
@@ -433,7 +433,7 @@ namespace FlightManagementSystem
 
             Pilot pilot = context.Pilots.FirstOrDefault(p => p.pilotId == flight.pilotId);
 
-            flight.status = "departed";
+            flight.status = "Departed";
 
             //pilot validtion 
             if (pilot != null)
@@ -471,8 +471,9 @@ namespace FlightManagementSystem
                 return;
             }
 
+
             var confirmedBookings = context.Bookings.Where(b => b.flightId == flight.flightId && b.status == "Confirmed").ToList();
-                                
+
             foreach (Booking booking in confirmedBookings)
             {
                 booking.status = "Cancelled";
@@ -480,8 +481,15 @@ namespace FlightManagementSystem
 
             flight.status = "Cancelled";
 
-          
+            Pilot pilot = context.Pilots.FirstOrDefault(p => p.pilotId == flight.pilotId);
+
+            if (pilot != null)
+            {
+                pilot.isAvailable = true;
+            }
+
             Console.WriteLine("Flight cancelled successfully.");
+            Console.WriteLine("Affected bookings: " + confirmedBookings.Count);
         }
 
         // Main Menu
@@ -553,6 +561,7 @@ namespace FlightManagementSystem
                         break;
 
                     case 9:
+                        CancelFlight();
                         break;
 
                     case 10:
