@@ -622,6 +622,7 @@ namespace FlightManagementSystem
                         break;
 
                     case 10:
+                        PassengerBookingHistory();
                         break;
 
                     case 11:
