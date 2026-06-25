@@ -448,7 +448,41 @@ namespace FlightManagementSystem
             Console.WriteLine("flight departed successfully.");
             Console.WriteLine("pilot flight hours updated.");
         }
+        //---------------------------------------------------------------
+        //case 9
+        public static void CancelFlight()
+        {
+            Console.WriteLine("---- Cancel Flight ----");
 
+            Console.Write("Enter flight ID: ");
+            int flightId = int.Parse(Console.ReadLine());
+
+            Flight flight = context.Flights.FirstOrDefault(f => f.flightId == flightId);
+
+            if (flight == null)
+            {
+                Console.WriteLine("Flight not found.");
+                return;
+            }
+
+            if (flight.status != "Scheduled")
+            {
+                Console.WriteLine("Only scheduled flights can be cancelled.");
+                return;
+            }
+
+            var confirmedBookings = context.Bookings.Where(b => b.flightId == flight.flightId && b.status == "Confirmed").ToList();
+                                
+            foreach (Booking booking in confirmedBookings)
+            {
+                booking.status = "Cancelled";
+            }
+
+            flight.status = "Cancelled";
+
+          
+            Console.WriteLine("Flight cancelled successfully.");
+        }
 
         // Main Menu
         // 
