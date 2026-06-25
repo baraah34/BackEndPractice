@@ -398,6 +398,56 @@ namespace FlightManagementSystem
 
         // ---------------------------------------------------------
         //case 8 
+        public static void DepartFlight()
+        {
+            Console.WriteLine("---- Depart Flight ----");
+
+            Console.Write("Enter flight ID: ");
+            int flightId = int.Parse(Console.ReadLine());
+
+            //search about the same id match the entered id 
+            
+            Flight flight = context.Flights.FirstOrDefault(f => f.flightId == flightId);
+
+            //flight validation
+            if (flight == null)
+            {
+                Console.WriteLine("flight not found.");
+                return;
+            }
+            //flight status validation
+            if (flight.status != "scheduled")
+            {
+                Console.WriteLine("only scheduled flights can depart.");
+                return;
+            }
+
+            Console.Write("enter flight duration in hours: ");
+            int duration = int.Parse(Console.ReadLine());
+
+            if (duration <= 0)
+            {
+                Console.WriteLine("invalid duration.");
+                return;
+            }
+
+            Pilot pilot = context.Pilots.FirstOrDefault(p => p.pilotId == flight.pilotId);
+
+            flight.status = "departed";
+
+            //pilot validtion 
+            if (pilot != null)
+            {
+                 //add  flight duration to  pilot total flight hour
+                pilot.flightHours = pilot.flightHours + duration;
+
+                // make  pilot available again after the flight departs
+                pilot.isAvailable = true;
+            }
+
+            Console.WriteLine("flight departed successfully.");
+            Console.WriteLine("pilot flight hours updated.");
+        }
 
 
         // Main Menu
@@ -465,6 +515,7 @@ namespace FlightManagementSystem
                         break;
 
                     case 8:
+                        DepartFlight();
                         break;
 
                     case 9:
