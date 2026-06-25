@@ -352,6 +352,9 @@ namespace FlightManagementSystem
             Console.WriteLine("Booking ID: " + booking.bookingId);
             Console.WriteLine("Seat Number: " + booking.seatNumber);
             Console.WriteLine("Total Price: " + booking.totalPrice);
+            Console.WriteLine("date: " + booking.bookingDate);
+
+
         }
         //------------------------------------------
         //case 7 
@@ -491,7 +494,61 @@ namespace FlightManagementSystem
             Console.WriteLine("Flight cancelled successfully.");
             Console.WriteLine("Affected bookings: " + confirmedBookings.Count);
         }
+        //--------------------------------------------------------------------
+        //case10
 
+        public static void PassengerBookingHistory()
+        {
+            Console.WriteLine("---- Passenger Booking History ----");
+
+            Console.Write("Enter passenger ID: ");
+            int passengerId = int.Parse(Console.ReadLine());
+
+            Passenger passenger = context.Passengers.FirstOrDefault(p => p.passengerId == passengerId);
+
+            if (passenger == null)
+            {
+                Console.WriteLine("Passenger not found.");
+                return;
+            }
+
+            var passengerBookings = context.Bookings
+                .Where(b => b.passengerId == passengerId)
+                .ToList();
+
+            if (passengerBookings.Count == 0)
+            {
+                Console.WriteLine("No booking history found.");
+                return;
+            }
+
+            decimal totalSpent = 0;
+
+            Console.WriteLine("Passenger: " + passenger.passengerName);
+
+            foreach (Booking booking in passengerBookings)
+            {
+                Flight flight = context.Flights.FirstOrDefault(f => f.flightId == booking.flightId);
+
+                if (flight != null)
+                {
+                    Console.WriteLine("Flight Code: " + flight.flightCode);
+                    Console.WriteLine("Route: " + flight.origin + "---> " + flight.destination);
+                    Console.WriteLine("Date: " + flight.departureDate);
+                    Console.WriteLine("Seat: " + booking.seatNumber);
+                    Console.WriteLine("Price Paid: " + booking.totalPrice);
+                    Console.WriteLine("Booking Status: " + booking.status);
+
+                    if (booking.status == "Confirmed")
+                    {
+                        totalSpent = totalSpent + booking.totalPrice;
+                    }
+                }
+            }
+            //if one passenger booked many flight the total spent will count it all 
+
+            Console.WriteLine("Total spent on confirmed bookings: " + totalSpent);
+        }
         // Main Menu
         // 
         static void Main(string[] args)
@@ -572,7 +629,7 @@ namespace FlightManagementSystem
 
                     case 0:
                         running = false;
-                        Console.WriteLine("Goodbye.");
+                        Console.WriteLine("bye.");
                         break;
 
                     default:
