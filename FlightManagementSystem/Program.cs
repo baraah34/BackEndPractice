@@ -504,6 +504,8 @@ namespace FlightManagementSystem
             Console.Write("Enter passenger ID: ");
             int passengerId = int.Parse(Console.ReadLine());
 
+            //search for the passenger using the id entered by the user 
+
             Passenger passenger = context.Passengers.FirstOrDefault(p => p.passengerId == passengerId);
 
             if (passenger == null)
@@ -511,10 +513,10 @@ namespace FlightManagementSystem
                 Console.WriteLine("Passenger not found.");
                 return;
             }
-
-            var passengerBookings = context.Bookings
-                .Where(b => b.passengerId == passengerId)
-                .ToList();
+            // get all bookings that belong to this passenger
+            var passengerBookings = context.Bookings.Where(b => b.passengerId == passengerId).ToList();
+                
+                
 
             if (passengerBookings.Count == 0)
             {
@@ -522,12 +524,14 @@ namespace FlightManagementSystem
                 return;
             }
 
+            // this will store  total money spent on confirmed bookings only
             decimal totalSpent = 0;
 
             Console.WriteLine("Passenger: " + passenger.passengerName);
 
             foreach (Booking booking in passengerBookings)
             {
+                // find the flight connected to this booking
                 Flight flight = context.Flights.FirstOrDefault(f => f.flightId == booking.flightId);
 
                 if (flight != null)
@@ -549,6 +553,62 @@ namespace FlightManagementSystem
 
             Console.WriteLine("Total spent on confirmed bookings: " + totalSpent);
         }
+        //-------------------------------------------------------------------------------------
+        // case 11
+        public static void FlightRevenueReport()
+        {
+            Console.WriteLine("---- Flight Revenue & Load Factor Report ----");
+
+            if (context.Flights.Count == 0)
+            {
+                Console.WriteLine("No flights found.");
+                return;
+            }
+            // variable will store  revenue of all flights together
+            decimal TotalRevenue = 0;
+
+            // Sort flights by highest revenue 
+            // For each flight get  confirmed bookings and sum their total Price
+
+            var sortedFlights = context.Flights .OrderByDescending(f => context.Bookings.Where(b => b.flightId == f.flightId && b.status == "Confirmed") .Sum(b => b.totalPrice)).ToList();
+
+            foreach (Flight flight in sortedFlights)
+            {
+                // Count how many confirmed bookings this flight has
+                int confirmedBookings = context.Bookings.Count(b => b.flightId == flight.flightId && b.status == "Confirmed");
+
+
+                //calculate revenue  for this flight=> sum of total Price for confirmed bookings only
+                decimal revenue = context.Bookings.Where(b => b.flightId == flight.flightId && b.status == "Confirmed").Sum(b => b.totalPrice);
+
+
+                // Find the aircraft used by this flight
+                // beacuse we  need aircraft total Seats to calculate load factor
+                Aircraft aircraft = context.Aircrafts .FirstOrDefault(a => a.aircraftId == flight.aircraftId);
+                   
+
+                decimal loadFactor = 0;
+
+                if (aircraft != null)
+                {
+                    //calculate load factor 
+                    loadFactor = ((decimal)confirmedBookings / aircraft.totalSeats) * 100;
+                }
+
+                Console.WriteLine("Flight Code: " + flight.flightCode);
+                Console.WriteLine("Route: " + flight.origin + " -> " + flight.destination);
+                Console.WriteLine("Confirmed Bookings: " + confirmedBookings);
+                Console.WriteLine("Revenue: " + revenue);
+                Console.WriteLine("Load Factor: " + loadFactor + "%");
+
+
+                // add this flight revenue to  total revenue
+                TotalRevenue = TotalRevenue + revenue;
+            }
+
+            Console.WriteLine("The Total Revenue: " + TotalRevenue);
+        }
+
         // Main Menu
         // 
         static void Main(string[] args)
@@ -626,6 +686,7 @@ namespace FlightManagementSystem
                         break;
 
                     case 11:
+                        FlightRevenueReport();
                         break;
 
                     case 0:
