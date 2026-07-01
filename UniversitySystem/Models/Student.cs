@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -31,5 +32,7 @@ namespace UniversitySystem.Models
         [Column(TypeName = "decimal(3,2)")]//how will store gpa in database 
         [Range(typeof(decimal), "0.0", "4.0")]//gpa must be between 0.0 and 4.0
         public decimal gpa { get; set; } = 0.0m; // default value
+
+        public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>(); // relationship ==> one student has many enrollments
     }
 }

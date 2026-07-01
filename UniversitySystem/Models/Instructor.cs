@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -32,5 +33,8 @@ namespace UniversitySystem.Models
         [Required]
         [MaxLength(50)]
         public string academicTitle { get; set; } = string.Empty; // user input, from list
+
+       
+        
     }
 }
