@@ -28,5 +28,12 @@ namespace UniversitySystem.Models
         [Required]
         [MaxLength(20)]
         public string status { get; set; } = "In Progress"; // default value
+                                                          
+        public Student Student { get; set; }  // relationship ==> enrollment belongs to one student
+
+       
+        public Course Course { get; set; }  // relationship ==> enrollment belongs to one course
+
+
     }
 }
