@@ -1,23 +1,32 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace UniversitySystem.Models
 {
     public class Enrollment
     {
-      
-        public int enrollmentId { get; set; } 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int enrollmentId { get; set; } // system generated
 
-        public int studentId { get; set; } 
+        [Required]
+        [ForeignKey("Student")]//class name 
+        public int studentId { get; set; } // foreign key
 
-        public int courseId { get; set; } 
+        [Required]
+        [ForeignKey("Course")]//class name 
+        public int courseId { get; set; } // foreign key
 
-       
-        public DateTime enrollmentDate { get; set; }
+        [Required]
+        public DateTime enrollmentDate { get; set; } // user input
 
-       
-        public string finalGrade { get; set; } 
+        [MaxLength(3)]
+        public string finalGrade { get; set; } // user input
 
-        public string status { get; set; }
+        [Required]
+        [MaxLength(20)]
+        public string status { get; set; } = "In Progress"; // default value
     }
 }
