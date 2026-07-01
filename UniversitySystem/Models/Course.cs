@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -34,5 +35,11 @@ namespace UniversitySystem.Models
         [Required]
         [MaxLength(20)]
         public string semesterOffered { get; set; } = string.Empty; // user input, from list
+
+      
+        public Department Department { get; set; } // relationship ==> course belongs to one department
+        public Instructor Instructor { get; set; } // relationship ==> one course  have one instructor
+
+        public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>(); // relationship ==> one course has many enrollments
     }
 }
