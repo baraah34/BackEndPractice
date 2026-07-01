@@ -1,27 +1,38 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UniversitySystem.Models
 {
+
     public class Course
     {
-      
-        public int courseId { get; set; } 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int courseId { get; set; } // system generated
 
-      
-        public string courseCode { get; set; } 
+        [Required]
+        [MaxLength(20)]
+        public string courseCode { get; set; } = string.Empty; // user input, unique
 
-      
-        public string courseTitle { get; set; } 
+        [Required]
+        [MaxLength(150)]
+        public string courseTitle { get; set; } = string.Empty; // user input
 
-   
-        public int creditHours { get; set; }
+        [Required]
+        [Range(1, 6)]
+        public int creditHours { get; set; } // user input
 
-    
-        public int departmentId { get; set; } 
+        [Required]
+        [ForeignKey("Department")]//class name 
+        public int departmentId { get; set; } // foreign key
 
-     
-        public int? instructorId { get; set; } 
 
-        public string semesterOffered { get; set; } 
+        [ForeignKey("Instructor")]//class name
+        public int instructorId { get; set; } // foreign key
+
+        [Required]
+        [MaxLength(20)]
+        public string semesterOffered { get; set; } = string.Empty; // user input, from list
     }
 }
