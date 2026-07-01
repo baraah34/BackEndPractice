@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,5 +25,9 @@ namespace UniversitySystem.Models
 
         [ForeignKey("HeadInstructor")]
         public int headInstructorId { get; set; } // foreign key
+
+        public Instructor HeadInstructor { get; set; } // relationship ==> one department head instructor
+
+        public ICollection<Course> Courses { get; set; } = new List<Course>(); // relationship ==> one department has many courses
     }
 }
