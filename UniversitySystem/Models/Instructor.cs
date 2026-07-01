@@ -34,7 +34,10 @@ namespace UniversitySystem.Models
         [MaxLength(50)]
         public string academicTitle { get; set; } = string.Empty; // user input, from list
 
-       
-        
+
+        public ICollection<Course> Courses { get; set; } = new List<Course>(); // relationship ==> one instructor teaches many courses
+
+
+        public Department HeadOfDepartment { get; set; } // relationship ==>one instructor head of one department
     }
 }
