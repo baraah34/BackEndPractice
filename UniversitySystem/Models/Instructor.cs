@@ -1,24 +1,36 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UniversitySystem.Models
 {
     public class Instructor
     {
-        
-        public int instructorId { get; set; } 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int instructorId { get; set; } // system generated
 
-      
-        public string fullName { get; set; } 
+        [Required]
+        [MaxLength(100)]
+        public string fullName { get; set; } = string.Empty; // user input
 
-      
-        public string email { get; set; } 
+        [Required]
+        [MaxLength(150)]
+        public string email { get; set; } = string.Empty; // user input, unique
 
-        public string officeNumber { get; set; } 
+        [MaxLength(20)]
+        public string officeNumber { get; set; } // user input, optional
 
-        public DateTime hireDate { get; set; } 
+        [Required]
+        public DateTime hireDate { get; set; } // user input
 
-        public decimal salary { get; set; } 
+        [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        [Range(typeof(decimal), "0.01", "999999999.99")]
+        public decimal salary { get; set; } // user input
 
-        public string academicTitle { get; set; } 
+        [Required]
+        [MaxLength(50)]
+        public string academicTitle { get; set; } = string.Empty; // user input, from list
     }
 }
