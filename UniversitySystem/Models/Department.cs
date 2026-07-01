@@ -1,20 +1,28 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UniversitySystem.Models
 {
     public class Department
     {
-        public int departmentId { get; set; } 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int departmentId { get; set; } // system generated
 
-      
-        public string departmentName { get; set; } 
+        [Required]
+        [MaxLength(100)]
+        public string departmentName { get; set; } = string.Empty; // user input, unique
 
-        public string building { get; set; } 
+        [MaxLength(50)]
+        public string building { get; set; } // user input
 
-        
-        public decimal budget { get; set; } 
+        [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        [Range(typeof(decimal), "0.00", "999999999.99")]
+        public decimal budget { get; set; } // user input
 
-        
-        public int? headInstructorId { get; set; } 
+        [ForeignKey("HeadInstructor")]
+        public int headInstructorId { get; set; } // foreign key
     }
 }
