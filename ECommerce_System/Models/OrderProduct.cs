@@ -24,6 +24,12 @@ namespace ECommerceSystem.Models
         [Range(1, 999)]
         public int quantity { get; set; } // user input
 
-       
+        //relations
+        public Order? Order { get; set; } // relationship ==> many orderproduct belong to one order
+
+        public Product? Product { get; set; } // relationship ==> many orderproduct belong to one product
+
+
+
     }
 }
