@@ -1,5 +1,4 @@
-﻿using ECommerce_System.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,6 +21,9 @@ namespace ECommerceSystem.Models
 
         [MaxLength(300)]
         public string? imageUrl { get; set; } // user input, optional
+                                       
+
+        public ICollection<Product> Products { get; set; } = new List<Product>(); // relationship ==> one category has many products
 
     }
 }
