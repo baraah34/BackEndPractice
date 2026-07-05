@@ -13,11 +13,11 @@ namespace UniversitySystem.Models
 
         [Required]
         [MaxLength(100)]
-        public string fullName { get; set; } = string.Empty; // user input
+        public string fullName { get; set; }  // user input
 
         [Required]
         [MaxLength(150)]
-        public string email { get; set; } = string.Empty; // user input, unique
+        public string email { get; set; }  // user input, unique
 
         [MaxLength(20)]
         public string officeNumber { get; set; } // user input, optional
@@ -32,7 +32,7 @@ namespace UniversitySystem.Models
 
         [Required]
         [MaxLength(50)]
-        public string academicTitle { get; set; } = string.Empty; // user input, from list
+        public string academicTitle { get; set; }  // user input, from list
 
 
         public ICollection<Course> Courses { get; set; } = new List<Course>(); // relationship ==> one instructor teaches many courses

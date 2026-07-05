@@ -14,11 +14,11 @@ namespace UniversitySystem.Models
 
         [Required]
         [MaxLength(20)]
-        public string courseCode { get; set; } = string.Empty; // user input, unique
+        public string courseCode { get; set; }  // user input, unique
 
         [Required]
         [MaxLength(150)]
-        public string courseTitle { get; set; } = string.Empty; // user input
+        public string courseTitle { get; set; }  // user input
 
         [Required]
         [Range(1, 6)]
@@ -34,7 +34,7 @@ namespace UniversitySystem.Models
 
         [Required]
         [MaxLength(20)]
-        public string semesterOffered { get; set; } = string.Empty; // user input, from list
+        public string semesterOffered { get; set; } // user input, from list
 
       
         public Department Department { get; set; } // relationship ==> course belongs to one department
