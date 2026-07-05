@@ -13,7 +13,7 @@ namespace UniversitySystem.Models
 
         [Required]
         [MaxLength(100)]
-        public string departmentName { get; set; } = string.Empty; // user input, unique
+        public string departmentName { get; set; } // user input, unique
 
         [MaxLength(50)]
         public string building { get; set; } // user input
