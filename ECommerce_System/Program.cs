@@ -1,7 +1,58 @@
-﻿namespace ECommerce_System
+﻿using ECommerceSystem.Models;
+
+namespace ECommerce_System
 {
     internal class Program
     {
+        static ECommerceContext context = new ECommerceContext();
+
+        // case 1: register New User
+        // --------------------------------------------------
+        static void RegisterUser()
+        {
+            Console.Clear();
+            Console.WriteLine("----- Register New User -----");
+
+            Console.Write("Enter username: ");
+            string username = Console.ReadLine();
+
+            Console.Write("Enter email: ");
+            string email = Console.ReadLine();
+
+            Console.Write("Enter password: ");
+            string password = Console.ReadLine();
+
+            Console.Write("Enter full name: ");
+            string fullName = Console.ReadLine();
+
+            Console.Write("Enter phone number, or leave empty: ");
+            string phoneNumber = Console.ReadLine();
+
+            Console.Write("Enter address, or leave empty: ");
+            string address = Console.ReadLine();
+
+            User user = new User
+            {
+                username = username,
+                email = email,
+                passwordHash = password,
+                fullName = fullName,
+
+                // if user leaves it empty and  save null because it is optional
+                phoneNumber = string.IsNullOrWhiteSpace(phoneNumber) ? null : phoneNumber,
+                address = string.IsNullOrWhiteSpace(address) ? null : address,
+
+                // system generated 
+                registrationDate = DateTime.Now,
+                isActive = true
+            };
+
+            context.Users.Add(user);
+            context.SaveChanges();
+
+            Console.WriteLine("User registered successfully.");
+            Console.WriteLine("New User ID: " + user.userId);
+        }
         static void Main(string[] args)
         {
             int choice;
@@ -29,6 +80,7 @@
                 switch (choice)
                 {
                     case 1:
+                        RegisterUser();
                         break;
 
                     case 2:
