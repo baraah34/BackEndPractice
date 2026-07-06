@@ -14,5 +14,12 @@ namespace ECommerce_System
         public DbSet<OrderProduct> OrderProducts { get; set; }
 
         public DbSet<Review> Reviews { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            options.UseSqlServer(
+                @"Server=DESKTOP-10MOCFK\MSSQLSERVER02;Database=ECommerceDB;Trusted_Connection=True;TrustServerCertificate=True;"
+            );
+        }
     }
 }
