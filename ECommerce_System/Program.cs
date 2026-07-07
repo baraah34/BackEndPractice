@@ -4,7 +4,7 @@ namespace ECommerce_System
 {
     internal class Program
     {
-        static ECommerceContext context = new ECommerceContext();
+       public static ECommerceContext context = new ECommerceContext();
 
         // case 1: register New User
         // --------------------------------------------------
