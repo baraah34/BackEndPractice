@@ -84,8 +84,80 @@ namespace ECommerce_System
             Console.WriteLine("Category added successfully.");
             Console.WriteLine("New Category ID: " + category.categoryId);
         }
-      
- 
+        // Case 3: Add New Product to Category
+        // --------------------------------------------------
+        static void AddProduct()
+        {
+            Console.Clear();
+            Console.WriteLine("----- Add New Product -----");
+
+            var categories = context.Categories.ToList();
+
+            if (!categories.Any())
+            {
+                Console.WriteLine("no categories found ,add categories first");
+                return;
+            }
+
+            Console.WriteLine("available categories:");
+            foreach (Category category in categories)
+            {
+                Console.WriteLine("ID: " + category.categoryId + " | Name: " + category.categoryName);
+
+            }
+
+            Console.Write("Enter category ID: ");
+            int categoryId = int.Parse(Console.ReadLine());
+
+            Category selectedCategory = context.Categories.FirstOrDefault(c => c.categoryId == categoryId);
+
+
+            if (selectedCategory == null)
+            {
+                Console.WriteLine("Category not found.");
+                return;
+            }
+
+            Console.Write("Enter product name: ");
+            string productName = Console.ReadLine();
+
+            Console.Write("Enter description, or leave empty: ");
+            string description = Console.ReadLine();
+
+            Console.Write("Enter price: ");
+            decimal price = decimal.Parse(Console.ReadLine());
+
+            Console.Write("Enter stock quantity: ");
+            int stockQuantity = int.Parse(Console.ReadLine());
+
+            Console.Write("Enter image URL, or leave empty: ");
+            string imageUrl = Console.ReadLine();
+
+            Product product = new Product
+            {
+                productName = productName,
+
+                // optional 
+                description = string.IsNullOrWhiteSpace(description) ? null : description,
+                imageUrl = string.IsNullOrWhiteSpace(imageUrl) ? null : imageUrl,
+
+                price = price,
+                stockQuantity = stockQuantity,
+                categoryId = categoryId,
+
+                // system generated 
+                createdAt = DateTime.Now,
+                isAvailable = true
+            };
+
+            context.Products.Add(product);
+            context.SaveChanges();
+
+            Console.WriteLine("Product added successfully.");
+            Console.WriteLine("New Product ID: " + product.productId);
+        }
+
+
         static void Main(string[] args)
         {
             int choice;
@@ -123,7 +195,7 @@ namespace ECommerce_System
                         break;
 
                     case 3:
-                        AddCategory();
+                        AddProduct();
                         break;
 
                     case 4:
