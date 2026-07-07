@@ -252,6 +252,64 @@ namespace ECommerce_System
             Console.WriteLine("Order ID: " + order.orderId);
             Console.WriteLine("Total Amount: " + order.totalAmount);
         }
+        
+        // CASE 4: WRITE PRODUCT REVIEW
+        //-------------------------------------------------
+        static void WriteReview()
+        {
+            Console.Clear();
+            Console.WriteLine("----- Write Product Review -----");
+
+            //list of users
+            Console.WriteLine("available Users:");
+            foreach (User user in context.Users.ToList())
+            {
+                Console.WriteLine("iD: " + user.userId + " | username: " + user.username);
+            }
+
+            Console.Write("enter user ID: ");
+            int userId = int.Parse(Console.ReadLine());
+
+            //list of products
+            Console.WriteLine("\nAvailable Products:");
+            foreach (Product product in context.Products.ToList())
+            {
+                Console.WriteLine("iD: " + product.productId + " | name: " + product.productName);
+            }
+
+            Console.Write("enter product ID: ");
+            int productId = int.Parse(Console.ReadLine());
+
+
+            Console.Write("enter rating from 1 to 5: ");
+            int rating = int.Parse(Console.ReadLine());
+
+            //rating validation
+            if (rating < 1 || rating > 5)
+            {
+                Console.WriteLine("rating must be between 1 and 5.");
+                return;
+            }
+
+            Console.Write("enter comment, or leave empty: ");
+            string comment = Console.ReadLine();
+
+            Review review = new Review
+            {
+                userId = userId,
+                productId = productId,
+                rating = rating,
+                comment = string.IsNullOrWhiteSpace(comment) ? null : comment,
+                reviewDate = DateTime.Now
+            };
+
+            context.Reviews.Add(review);
+            context.SaveChanges();
+
+            Console.WriteLine("review added successfully.");
+            Console.WriteLine("review ID: " + review.reviewId);
+        }
+
 
         static void Main(string[] args)
         {
@@ -298,6 +356,7 @@ namespace ECommerce_System
                         break;
 
                     case 5:
+                        WriteReview();
                         break;
 
                     case 6:
