@@ -253,7 +253,7 @@ namespace ECommerce_System
             Console.WriteLine("Total Amount: " + order.totalAmount);
         }
         
-        // CASE 4: WRITE PRODUCT REVIEW
+        // CASE 5: WRITE PRODUCT REVIEW
         //-------------------------------------------------
         static void WriteReview()
         {
@@ -309,7 +309,55 @@ namespace ECommerce_System
             Console.WriteLine("review added successfully.");
             Console.WriteLine("review ID: " + review.reviewId);
         }
+        
+        // Case 6: Update Product Price and Availability
+        // --------------------------------------------------
+        static void UpdateProduct()
+        {
+            Console.Clear();
+            Console.WriteLine("----- Update Product -----");
 
+            var products = context.Products.ToList();
+
+            if (!products.Any())
+            {
+                Console.WriteLine("No products found.");
+                return;
+            }
+
+            Console.WriteLine("Products:");
+            foreach (Product productItem in products)
+            {
+                Console.WriteLine("ID: " + productItem.productId + " | Name: " + productItem.productName +" | Price: " + productItem.price +" | Available: " + productItem.isAvailable);
+
+            }
+
+            Console.Write("Enter product ID: ");
+            int productId = int.Parse(Console.ReadLine());
+
+            Product product = context.Products.FirstOrDefault(p => p.productId == productId);
+                
+
+            if (product == null)
+            {
+                Console.WriteLine("Product not found.");
+                return;
+            }
+
+            Console.Write("Enter new price: ");
+            decimal newPrice = decimal.Parse(Console.ReadLine());
+
+            Console.Write("Is product available? true/false: ");
+            bool isAvailable = bool.Parse(Console.ReadLine());
+
+            product.price = newPrice;
+            product.isAvailable = isAvailable;
+
+            context.SaveChanges();
+
+            Console.WriteLine("Product updated successfully.");
+        }
+       
 
         static void Main(string[] args)
         {
@@ -360,9 +408,11 @@ namespace ECommerce_System
                         break;
 
                     case 6:
+                        UpdateProduct();
                         break;
 
                     case 7:
+                        
                         break;
 
                     case 8:
