@@ -45,6 +45,7 @@ namespace ECommerceSystem.Models
 
         public ICollection<Review> Reviews { get; set; } = new List<Review>(); // relationship ==> one product has many reviews
 
+        public ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();//One product can appear in many orders
 
 
     }
