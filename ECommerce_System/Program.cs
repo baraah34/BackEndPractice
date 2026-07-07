@@ -156,7 +156,102 @@ namespace ECommerce_System
             Console.WriteLine("Product added successfully.");
             Console.WriteLine("New Product ID: " + product.productId);
         }
+        //CASE 4 :  PLACE ORDER 
+        //-------------------------------------------------
+        static void PlaceOrder()
+        {
+            Console.Clear();
+            Console.WriteLine("----- Place Order -----");
 
+            Console.Write("Enter user ID: ");
+            int userId = int.Parse(Console.ReadLine());
+
+            if (!context.Users.Any(u => u.userId == userId))
+            {
+                Console.WriteLine("User not found.");
+                return;
+            }
+
+            Order order = new Order
+            {
+                userId = userId,
+                orderDate = DateTime.Now,
+                status = "Pending",
+                totalAmount = 0
+            };
+
+            // create and save Order first to get orderid
+            context.Orders.Add(order);
+            context.SaveChanges();
+
+            decimal totalAmount = 0;
+            string addMore = "yes";
+
+            while (addMore == "yes")
+            {
+                var products = context.Products.Where(p => p.isAvailable && p.stockQuantity > 0).ToList();
+                    
+                                    Console.WriteLine("\nAvailable Products:");
+                foreach (Product p in products)
+                {
+                    Console.WriteLine("ID: " + p.productId +" | Name: " + p.productName +" | Price: " + p.price +" | Stock: " + p.stockQuantity);
+                               
+                }
+
+                Console.Write("Enter product ID: ");
+                int productId = int.Parse(Console.ReadLine());
+
+                Product product = products.FirstOrDefault(p => p.productId == productId);
+
+                if (product == null)
+                {
+                    Console.WriteLine("Product not found or not available.");
+                    continue;
+                }
+
+                Console.Write("Enter quantity: ");
+                int quantity = int.Parse(Console.ReadLine());
+
+                //quantity validation
+                if (quantity <= 0 || quantity > product.stockQuantity)
+                {
+                    Console.WriteLine("Invalid quantity.");
+                    continue;
+                }
+
+                OrderProduct orderProduct = new OrderProduct
+                {
+                    orderId = order.orderId,
+                    productId = product.productId,
+                    quantity = quantity,
+                    unitPrice = product.price
+                };
+
+                
+                context.OrderProducts.Add(orderProduct);
+
+                // decrement stock
+                product.stockQuantity -= quantity;
+
+                // calculate  totalAmount
+                totalAmount += orderProduct.unitPrice * quantity;
+
+                // ask user if they want to add another product
+                Console.Write("Add another product? yes/no: ");
+                addMore = Console.ReadLine().ToLower();
+
+
+            }
+
+            order.totalAmount = totalAmount;
+
+            // Save OrderProducts, stock changes, and totalAmount
+            context.SaveChanges();
+
+            Console.WriteLine("Order placed successfully.");
+            Console.WriteLine("Order ID: " + order.orderId);
+            Console.WriteLine("Total Amount: " + order.totalAmount);
+        }
 
         static void Main(string[] args)
         {
@@ -199,7 +294,7 @@ namespace ECommerce_System
                         break;
 
                     case 4:
-                        
+                        PlaceOrder();
                         break;
 
                     case 5:
