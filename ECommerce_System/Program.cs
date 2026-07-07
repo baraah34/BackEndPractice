@@ -53,6 +53,39 @@ namespace ECommerce_System
             Console.WriteLine("User registered successfully.");
             Console.WriteLine("New User ID: " + user.userId);
         }
+        // Case 2: Add  Categories
+        // --------------------------------------------------
+        static void AddCategory()
+        {
+            Console.Clear();
+            Console.WriteLine("----- Add Category -----");
+
+            Console.Write("Enter category name: ");
+            string categoryName = Console.ReadLine();
+
+            Console.Write("Enter description, or leave empty: ");
+            string description = Console.ReadLine();
+
+            Console.Write("Enter image URL, or leave empty: ");
+            string imageUrl = Console.ReadLine();
+
+            Category category = new Category
+            {
+                categoryName = categoryName,
+
+                // optional 
+                description = string.IsNullOrWhiteSpace(description) ? null : description,
+                imageUrl = string.IsNullOrWhiteSpace(imageUrl) ? null : imageUrl
+            };
+
+            context.Categories.Add(category);
+            context.SaveChanges();
+
+            Console.WriteLine("Category added successfully.");
+            Console.WriteLine("New Category ID: " + category.categoryId);
+        }
+      
+ 
         static void Main(string[] args)
         {
             int choice;
@@ -61,17 +94,18 @@ namespace ECommerce_System
             {
                 Console.WriteLine("\n----- E-Commerce EF Core System ----");
                 Console.WriteLine("1. Register New User");
-                Console.WriteLine("2. Add New Product");
-                Console.WriteLine("3. Place Order");
-                Console.WriteLine("4. Write Product Review");
-                Console.WriteLine("5. Update Product Price and Availability");
-                Console.WriteLine("6. Cancel Order");
-                Console.WriteLine("7. Delete Review");
-                Console.WriteLine("8. View All Products");
-                Console.WriteLine("9. Filter Products by Category and Price Range");
-                Console.WriteLine("10. Get Category With Products");
-                Console.WriteLine("11. View User Order History");
-                Console.WriteLine("12. Product Summary Report");
+                Console.WriteLine("2. Add Category");
+                Console.WriteLine("3. Add New Product");
+                Console.WriteLine("4. Place Order");
+                Console.WriteLine("5. Write Product Review");
+                Console.WriteLine("6. Update Product Price and Availability");
+                Console.WriteLine("7. Cancel Order");
+                Console.WriteLine("8. Delete Review");
+                Console.WriteLine("9. View All Products");
+                Console.WriteLine("10. Filter Products by Category and Price Range");
+                Console.WriteLine("11. Get Category With Products");
+                Console.WriteLine("12. View User Order History");
+                Console.WriteLine("13. Product Summary Report");
                 Console.WriteLine("0. Exit");
 
                 Console.Write("Enter choice: ");
@@ -84,12 +118,16 @@ namespace ECommerce_System
                         break;
 
                     case 2:
+                        AddCategory();
+                      
                         break;
 
                     case 3:
+                        AddCategory();
                         break;
 
                     case 4:
+                        
                         break;
 
                     case 5:
