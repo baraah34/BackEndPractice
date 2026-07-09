@@ -357,7 +357,55 @@ namespace ECommerce_System
 
             Console.WriteLine("Product updated successfully.");
         }
-       
+        // Case 7: Cancel Order
+        // --------------------------------------------------
+        static void CancelOrder()
+        {
+            Console.Clear();
+            Console.WriteLine("----- Cancel Order -----");
+
+            Console.Write("Enter order ID: ");
+            int orderId = int.Parse(Console.ReadLine());
+
+            Order order = context.Orders.FirstOrDefault(o => o.orderId == orderId);
+
+
+            if (order == null)
+            {
+                Console.WriteLine("Order not found.");
+                return;
+            }
+
+            if (order.status == "Cancelled")
+            {
+                Console.WriteLine("Order is already cancelled");
+                return;
+            }
+
+            //get all products that belong to this order from the OrderProducts table
+            var orderProducts = context.OrderProducts.Where(op => op.orderId == orderId).ToList();
+
+
+
+            foreach (OrderProduct prod in orderProducts)
+            {
+                //search for product 
+                Product product = context.Products.FirstOrDefault(p => p.productId == prod.productId);
+
+
+                if (product != null)
+                {
+                    product.stockQuantity += prod.quantity;
+                }
+            }
+
+            order.status = "Cancelled";
+
+            context.SaveChanges();
+
+            Console.WriteLine("Order cancelled successfully");
+            Console.WriteLine("Product stock restored");
+        }
 
         static void Main(string[] args)
         {
@@ -412,7 +460,7 @@ namespace ECommerce_System
                         break;
 
                     case 7:
-                        
+                        CancelOrder();
                         break;
 
                     case 8:
