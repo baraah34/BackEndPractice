@@ -39,7 +39,7 @@ namespace ECommerceSystem.Models
 
         public User? User { get; set; } // relationship ==> many orders belong to one user
 
-        public ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>(); 
+        public virtual ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>(); 
 
     }
 }
