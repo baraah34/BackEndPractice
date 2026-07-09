@@ -1,4 +1,5 @@
 ﻿using ECommerceSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce_System
 {
@@ -521,6 +522,45 @@ namespace ECommerce_System
                                   " | Stock: " + product.stockQuantity);
             }
         }
+        // Case 11 Get Category with all Its Products
+        // --------------------------------------------------
+        static void GetCategoryWithProducts()
+        {
+            Console.Clear();
+            Console.WriteLine("----- Category With Products -----");
+
+            Console.Write("Enter category ID: ");
+            int categoryId = int.Parse(Console.ReadLine());
+
+            // i used include to load the related Products with the selected Category 
+            Category category = context.Categories.Include(c => c.Products).FirstOrDefault(c => c.categoryId == categoryId);
+                
+                
+
+            if (category == null)
+            {
+                Console.WriteLine("Category not found.");
+                return;
+            }
+
+            Console.WriteLine("Category ID: " + category.categoryId);
+            Console.WriteLine("Category Name: " + category.categoryName);
+            Console.WriteLine("Description: " + category.description);
+
+            if (!category.Products.Any())
+            {
+                Console.WriteLine("No products in this category.");
+                return;
+            }
+
+            Console.WriteLine("Products:");
+            foreach (Product product in category.Products)
+            {
+                Console.WriteLine("ID: " + product.productId +" | Name: " + product.productName +
+                                  " | Price: " + product.price +" | Stock: " + product.stockQuantity);
+                                  
+            }
+        }
 
 
         static void Main(string[] args)
@@ -592,7 +632,7 @@ namespace ECommerce_System
                         break;
 
                     case 11:
-                      
+                        GetCategoryWithProducts();
                         break;
 
                     case 12:
