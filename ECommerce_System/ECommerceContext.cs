@@ -17,9 +17,11 @@ namespace ECommerce_System
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlServer(
-                @"Server=localhost\MSSQLSERVER02;Database=ECommerceDB;Trusted_Connection=True;TrustServerCertificate=True;"
-            );
+            options
+                .UseLazyLoadingProxies()
+                .UseSqlServer(
+                    @"Server=DESKTOP-10MOCFK\MSSQLSERVER02;Database=ECommerceDB;Trusted_Connection=True;TrustServerCertificate=True;"
+                );
         }
     }
 }
