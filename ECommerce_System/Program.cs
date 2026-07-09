@@ -609,7 +609,69 @@ namespace ECommerce_System
                 }
             }
         }
+        // Case 13 Product Summary Report
+        // --------------------------------------------------
      
+        static void ProductSummaryReport()
+        {
+            Console.Clear();
+            Console.WriteLine("---- Product Summary Report ----");
+
+            // part A: Projection
+
+            // Select creates a report with product name, category name,
+            // review count, average rating, and current stock
+            var summary = context.Products.Select(p => new
+               {
+                    ProductName = p.productName,
+                    // if category is null, show "No Category" instead of causing an error
+                    CategoryName = p.Category != null ? p.Category.categoryName : "No Category",
+
+                    ReviewCount = p.Reviews.Count(),
+
+                    // if the product has no reviews ==> show 0 to avoid Average() error
+                    AvgRating = p.Reviews.Any()? p.Reviews.Average(r => r.rating)  : 0,
+                    Stock = p.stockQuantity
+                }).ToList();
+                
+
+            if (!summary.Any())
+            {
+                Console.WriteLine("No products found.");
+                return;
+            }
+
+            foreach (var prod in summary)
+            {
+                Console.WriteLine("Product: " + prod.ProductName);
+                Console.WriteLine("Category: " + prod.CategoryName);
+                Console.WriteLine("Reviews: " + prod.ReviewCount);
+                Console.WriteLine("Avg Rating: " + prod.AvgRating);
+                Console.WriteLine("Stock: " + prod.Stock);
+                Console.WriteLine("-------------------------------------");
+            }
+
+            // PART B: Lazy Loading Demo
+            Console.WriteLine("\n---- Lazy Loading Demo ----");
+
+            // Fetch one product WITHOUT Include
+            Product product = context.Products.FirstOrDefault();
+
+            if (product == null)
+            {
+                Console.WriteLine("No products found for lazy loading demo.");
+                return;
+            }
+
+            Console.WriteLine("Product: " + product.productName);
+
+          
+            foreach (Review review in product.Reviews)
+            {
+                Console.WriteLine("Rating: " + review.rating +" | Comment: " + review.comment);
+                                  
+            }
+        }
 
 
         static void Main(string[] args)
@@ -688,7 +750,7 @@ namespace ECommerce_System
                         ViewOrderHistory();
                         break;
                     case 13:
-                  
+                        ProductSummaryReport();
                         break;
                     case 0:
                         Console.WriteLine("Goodbye!");
