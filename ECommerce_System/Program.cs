@@ -406,7 +406,7 @@ namespace ECommerce_System
             Console.WriteLine("Order cancelled successfully");
             Console.WriteLine("Product stock restored");
         }
-        // Case 7: Delete Review
+        // Case 8: Delete Review
         // --------------------------------------------------
         static void DeleteReview()
         {
@@ -445,6 +445,30 @@ namespace ECommerce_System
             context.SaveChanges();
 
             Console.WriteLine("Review deleted successfully");
+        }
+        // Case 9: View All Products
+        // --------------------------------------------------
+        static void ViewAllProducts()
+        {
+            Console.Clear();
+            Console.WriteLine("----- View All Products -----");
+
+            var products = context.Products.ToList();
+
+            if (!products.Any())
+            {
+                Console.WriteLine("No products found.");
+                return;
+            }
+
+            foreach (Product product in products)
+            {
+                Console.WriteLine("Product ID: " + product.productId);
+                Console.WriteLine("Name: " + product.productName);
+                Console.WriteLine("Price: " + product.price);
+                Console.WriteLine("Stock Quantity: " + product.stockQuantity);
+                Console.WriteLine("Available: " + product.isAvailable);
+            }
         }
 
         static void Main(string[] args)
@@ -508,6 +532,7 @@ namespace ECommerce_System
                         break;
 
                     case 9:
+                        ViewAllProducts();
                         break;
 
                     case 10:
