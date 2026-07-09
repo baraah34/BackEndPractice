@@ -31,9 +31,9 @@ namespace ECommerceSystem.Models
 
 
         //relations
-        public Order? Order { get; set; } // relationship ==> many orderproduct belong to one order
+        public virtual Order? Order { get; set; } // relationship ==> many orderproduct belong to one order
 
-        public Product? Product { get; set; } // relationship ==> many orderproduct belong to one product
+        public virtual Product? Product { get; set; } // relationship ==> many orderproduct belong to one product
 
 
 

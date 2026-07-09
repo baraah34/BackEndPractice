@@ -609,7 +609,73 @@ namespace ECommerce_System
                 }
             }
         }
-      
+        // Case 13: Product Summary Report
+        // --------------------------------------------------
+        static void ProductSummaryReport()
+        {
+            Console.Clear();
+            Console.WriteLine("----- Product Summary Report -----");
+
+            // PART A: Projection
+            // Select creates a report with only the needed data.
+            // It gets product name, category name, review count, average rating, and stock.
+            var report = context.Products
+     .Select(p => new
+     {
+         ProductName = p.productName,
+
+         // Get category name from Category table
+         CategoryName = p.Category != null ? p.Category.categoryName : "No Category",
+
+         // Count total reviews for this product
+         ReviewCount = p.Reviews.Count(),
+
+         // Calculate average rating.
+         // If there are no reviews, show 0.
+         AverageRating = p.Reviews.Any()
+             ? p.Reviews.Average(r => r.rating)
+             : 0,
+
+         // Current product stock
+         CurrentStock = p.stockQuantity
+     })
+     .ToList();
+
+            if (!report.Any())
+            {
+                Console.WriteLine("No products found.");
+                return;
+            }
+
+            foreach (var item in report)
+            {
+                Console.WriteLine("Product: " + item.ProductName);
+                Console.WriteLine("Category: " + item.CategoryName);
+                Console.WriteLine("Review Count: " + item.ReviewCount);
+                Console.WriteLine("Average Rating: " + item.AverageRating);
+                Console.WriteLine("Current Stock: " + item.CurrentStock);
+                Console.WriteLine("--------------------------------");
+            }
+
+            // PART B: Lazy Loading Demo
+            // Fetch one product without Include.
+            Product product = context.Products.FirstOrDefault();
+
+            if (product != null)
+            {
+                // SECOND QUERY FIRES HERE if lazy loading is enabled.
+                // Because we did not use Include(p => p.Reviews),
+                // EF Core loads Reviews only when product.Reviews is accessed.
+                var reviews = product.Reviews;
+
+                Console.WriteLine("\nLazy Loading Demo:");
+                Console.WriteLine("Product: " + product.productName);
+                Console.WriteLine("Reviews Count: " + reviews.Count);
+            }
+        }
+
+
+
         static void Main(string[] args)
         {
             int choice;
@@ -686,7 +752,7 @@ namespace ECommerce_System
                         ViewOrderHistory();
                         break;
                     case 13:
-                      
+                        ProductSummaryReport();
                         break;
                     case 0:
                         Console.WriteLine("Goodbye!");

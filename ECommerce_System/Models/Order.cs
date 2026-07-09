@@ -37,7 +37,7 @@ namespace ECommerceSystem.Models
         [MaxLength(50)]
         public string paymentMethod { get; set; } = string.Empty; // from list
 
-        public User? User { get; set; } // relationship ==> many orders belong to one user
+        public virtual User? User { get; set; } // relationship ==> many orders belong to one user
 
         public virtual ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>(); 
 
