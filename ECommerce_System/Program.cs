@@ -406,6 +406,46 @@ namespace ECommerce_System
             Console.WriteLine("Order cancelled successfully");
             Console.WriteLine("Product stock restored");
         }
+        // Case 7: Delete Review
+        // --------------------------------------------------
+        static void DeleteReview()
+        {
+            Console.Clear();
+            Console.WriteLine("----- Delete Review -----");
+
+            var reviews = context.Reviews.ToList();
+
+            if (!reviews.Any())
+            {
+                Console.WriteLine("No reviews found");
+                return;
+            }
+
+            Console.WriteLine("Reviews:");
+            foreach (Review reviewProduct in reviews)
+            {
+                Console.WriteLine("ID: " + reviewProduct.reviewId +
+                                  " | Rating: " + reviewProduct.rating +
+                                  " | Comment: " + reviewProduct.comment);
+            }
+
+            Console.Write("Enter review ID: ");
+            int reviewId = int.Parse(Console.ReadLine());
+
+            Review review = context.Reviews.FirstOrDefault(r => r.reviewId == reviewId);
+                
+
+            if (review == null)
+            {
+                Console.WriteLine("Review not found");
+                return;
+            }
+
+            context.Reviews.Remove(review);
+            context.SaveChanges();
+
+            Console.WriteLine("Review deleted successfully");
+        }
 
         static void Main(string[] args)
         {
@@ -464,6 +504,7 @@ namespace ECommerce_System
                         break;
 
                     case 8:
+                        DeleteReview();
                         break;
 
                     case 9:
