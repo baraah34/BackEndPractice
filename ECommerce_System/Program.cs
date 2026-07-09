@@ -561,8 +561,57 @@ namespace ECommerce_System
                                   
             }
         }
+        // Case 12 View Order History with Full Details
+        // --------------------------------------------------
+        static void ViewOrderHistory()
+        {
+            Console.Clear();
+            Console.WriteLine("----- User Order History -----");
+
+            Console.Write("Enter user ID: ");
+            int userId = int.Parse(Console.ReadLine());
+
+            // load  user (include) their orders ,(then include) each order's OrderProducts,
+
+            // and (then include)  each OrderProduct's related Product details
+
+            User user = context.Users.Include(u => u.Orders).ThenInclude(o => o.OrderProducts).ThenInclude(op => op.Product).FirstOrDefault(u => u.userId == userId);
+                
+                    
+            if (user == null)
+            {
+                Console.WriteLine("User not found.");
+                return;
+            }
+
+            Console.WriteLine("User: " + user.username);
+
+            if (!user.Orders.Any())
+            {
+                Console.WriteLine("This user has no orders.");
+                return;
+            }
+
+            foreach (Order order in user.Orders)
+            {
+                Console.WriteLine("\nOrder ID: " + order.orderId);
+                Console.WriteLine("Order Date: " + order.orderDate);
+                Console.WriteLine("Status: " + order.status);
+                Console.WriteLine("Total Amount: " + order.totalAmount);
+
+                Console.WriteLine("Order Products:");
+
+                foreach (OrderProduct item in order.OrderProducts)
+                {
+                    Console.WriteLine("Product: " + item.Product.productName +
+                                      " | Quantity: " + item.quantity +
+                                      " | Unit Price: " + item.unitPrice);
+                }
+            }
+        }
 
 
+    
         static void Main(string[] args)
         {
             int choice;
@@ -636,9 +685,11 @@ namespace ECommerce_System
                         break;
 
                     case 12:
-                        
+                        ViewOrderHistory();
                         break;
-
+                    case 13:
+                    
+                        break;
                     case 0:
                         Console.WriteLine("Goodbye!");
                         break;
