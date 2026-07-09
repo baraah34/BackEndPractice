@@ -37,8 +37,8 @@ namespace ECommerceSystem.Models
         public bool isActive { get; set; } = true; // default value
 
         //relations
-        public ICollection<Order> Orders { get; set; } = new List<Order>(); // relationship ==> one user places many orders
+        public virtual ICollection<Order> Orders { get; set; } = new List<Order>(); // relationship ==> one user places many orders
 
-        public ICollection<Review> Reviews { get; set; } = new List<Review>(); // relationship ==> one user writes many reviews
+        public virtual ICollection<Review> Reviews { get; set; } = new List<Review>(); // relationship ==> one user writes many reviews
     }
 }

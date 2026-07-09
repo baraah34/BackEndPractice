@@ -20,7 +20,7 @@ namespace ECommerceSystem.Models
         public string? description { get; set; } // user input, optional
 
         [MaxLength(300)]
-        public string? imageUrl { get; set; } // user input, optional
+        public virtual string? imageUrl { get; set; } // user input, optional
                                        
 
         public virtual ICollection<Product> Products { get; set; } = new List<Product>(); // relationship ==> one category has many products
