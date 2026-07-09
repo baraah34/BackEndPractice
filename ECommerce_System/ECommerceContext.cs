@@ -20,7 +20,7 @@ namespace ECommerce_System
             options
                 .UseLazyLoadingProxies()
                 .UseSqlServer(
-                    @"Server=DESKTOP-10MOCFK\MSSQLSERVER02;Database=ECommerceDB;Trusted_Connection=True;TrustServerCertificate=True;"
+                    @"Server=localhost\MSSQLSERVER02;Database=ECommerceDB;Trusted_Connection=True;TrustServerCertificate=True;"
                 );
         }
     }
