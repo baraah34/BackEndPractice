@@ -24,10 +24,16 @@ namespace ECommerceSystem.Models
         [Range(1, 999)]
         public int quantity { get; set; } // user input
 
-        //relations
-        public Order? Order { get; set; } // relationship ==> many orderproduct belong to one order
+        [Required]
+        [Column(TypeName = "decimal(10,2)")]
+        [Range(typeof(decimal), "0.01", "99999.99")]
+        public decimal unitPrice { get; set; } // product price at time of order
 
-        public Product? Product { get; set; } // relationship ==> many orderproduct belong to one product
+
+        //relations
+        public virtual Order? Order { get; set; } // relationship ==> many orderproduct belong to one order
+
+        public virtual Product? Product { get; set; } // relationship ==> many orderproduct belong to one product
 
 
 

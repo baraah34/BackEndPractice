@@ -41,10 +41,11 @@ namespace ECommerceSystem.Models
         public bool isAvailable { get; set; } = true; // default value
 
 
-        public Category? Category { get; set; } // relationship ==> many products belong to one category
+        public virtual Category? Category { get; set; } // relationship ==> many products belong to one category
 
-        public ICollection<Review> Reviews { get; set; } = new List<Review>(); // relationship ==> one product has many reviews
+        public virtual ICollection<Review> Reviews { get; set; } = new List<Review>(); // relationship ==> one product has many reviews
 
+        public virtual ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();//One product can appear in many orders
 
 
     }

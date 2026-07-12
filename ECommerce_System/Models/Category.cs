@@ -23,7 +23,7 @@ namespace ECommerceSystem.Models
         public string? imageUrl { get; set; } // user input, optional
                                        
 
-        public ICollection<Product> Products { get; set; } = new List<Product>(); // relationship ==> one category has many products
+        public virtual ICollection<Product> Products { get; set; } = new List<Product>(); // relationship ==> one category has many products
 
     }
 }
