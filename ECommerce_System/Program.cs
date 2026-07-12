@@ -172,13 +172,21 @@ namespace ECommerce_System
                 Console.WriteLine("User not found.");
                 return;
             }
+            Console.Write("Enter shipping address: ");
+            string shippingAddress = Console.ReadLine();
+
+            Console.Write("Enter payment method[ Visa / Cash]: ");
+            string paymentMethod = Console.ReadLine();
+
 
             Order order = new Order
             {
                 userId = userId,
                 orderDate = DateTime.Now,
                 status = "Pending",
-                totalAmount = 0
+                totalAmount = 0,
+                shippingAddress = shippingAddress,
+                paymentMethod = paymentMethod
             };
 
             // create and save Order first to get orderid
